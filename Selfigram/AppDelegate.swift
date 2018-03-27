@@ -7,7 +7,10 @@
 //
 
 import UIKit
+import Parse
 
+
+   
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
@@ -16,6 +19,47 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        
+        // Initialize Parse.
+        // Replace YOUR_APP_ID and URL_TO_YOUR_PARSE_SERVER with the values you chose when you installed your Parse server.
+        let configuration = ParseClientConfiguration { clientConfiguration in
+            clientConfiguration.applicationId = "1234"
+            clientConfiguration.server = "https://liam-fahy.herokuapp.com/parse"
+        }
+        Parse.initialize(with: configuration)
+        
+        let user = PFUser()
+        let username = "Liam"
+        let password = "Fahy"
+        user.username = username
+        user.password = password
+        user.signUpInBackground(block: { (success, error) -> Void in
+            if success {
+                print("successfully signuped a user")
+            }else {
+            PFUser.logInWithUsername(inBackground: username, password: password, block: { (user, error) -> Void in
+            if let user = user {
+            print("successfully logged in \(user)")
+            }
+            })
+        }
+        })
+        
+        
+        return true
+    
+        
+        let testObject = PFObject(className: "TestObject")
+        testObject["foo"] = "bar"
+        testObject.saveInBackground(block: { (success: Bool, error: Error?) -> Void in
+            if success {
+            
+            print("Object has been saved.")
+            }
+            
+        })
+     
+        
         return true
     }
 
@@ -42,5 +86,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
 
-}
 
+
+}
