@@ -26,6 +26,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             clientConfiguration.applicationId = "1234"
             clientConfiguration.server = "https://liam-fahy.herokuapp.com/parse"
         }
+        Post.registerSubclass()
         Parse.initialize(with: configuration)
         
         let user = PFUser()
